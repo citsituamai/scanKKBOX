@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -12,8 +13,9 @@ public class MainScanner {
 	static String[] Artist = null;
 	static int no = 0;
 	static boolean flag = false;
-	
-	
+//	1
+//	2
+//	3
 	public static void main(String[] arg) throws Exception {
 		
 		String chinese_kkbox = "http://www.kkbox.com/tw/tc/charts/chinese-index.html";
@@ -23,13 +25,21 @@ public class MainScanner {
 		String hokkien_kkbox = "http://www.kkbox.com/tw/tc/charts/hokkien-index.html";
 		String cantonese_kkbox = "http://www.kkbox.com/tw/tc/charts/cantonese-index.html";
 		
-		gotYou(chinese_kkbox, "華語");
-		gotYou(western_kkbox, "西洋");
-		gotYou(japanese_kkbox, "日語");
-		gotYou(korean_kkbox, "韓語");
-		gotYou(hokkien_kkbox, "台語");
-		gotYou(cantonese_kkbox, "粵語");
+//		gotYou(chinese_kkbox, "華語");
+//		gotYou(western_kkbox, "西洋");
+//		gotYou(japanese_kkbox, "日語");
+//		gotYou(korean_kkbox, "韓語");
+//		gotYou(hokkien_kkbox, "台語");
+//		gotYou(cantonese_kkbox, "粵語");
 		
+		
+		//華語單曲月榜
+		String chinese_kkbox_100 = "http://www.kkbox.com/tw/tc/charts/chinese-monthly-song-latest.html";
+		gotYou(chinese_kkbox_100, "華語");
+
+		String htifm50 = "http://www.hitoradio.com/newweb/chart_2.php?ch_year=2013&pageNum_rsList=0";
+        gotYou(htifm50, "華語");
+
 		
 	}
 	
@@ -42,16 +52,32 @@ public class MainScanner {
 		try {
 			URL url_address = new URL(link);
 			BufferedReader br = new BufferedReader(new InputStreamReader(url_address.openStream(),"UTF-8"));
+			System.out.println("printData2");
+			
+//			//test
+			FileWriter fw = new FileWriter("hitfm.txt");
 			
 			while ((str = br.readLine()) != null) {
 
-				flag = printTitle(language + "單曲日榜", "	KKBOX-" + language + "單曲日榜 ", true);
-				flag = printTitle(language + "單曲週榜", "	KKBOX-" + language + "單曲週榜 ", true);
-				flag = printTitle(language + "單曲月榜", "	KKBOX-" + language + "單曲月榜", true);
-				flag = printTitle("song-latest.html\">完整 Top 100 榜單", "", false);
-
-				printData();
+//				flag = printTitle(language + "單曲日榜", "	KKBOX-" + language + "單曲日榜 ", false);
+//				flag = printTitle(language + "單曲週榜", "	KKBOX-" + language + "單曲週榜 ", false);
+//				flag = printTitle(language + "單曲月榜", "	KKBOX-" + language + "單曲月榜", true);
+//				flag = printTitle("song-latest.html\">完整 Top 100 榜單", "", false);
+//				printData();
+//
+//				flag = printTitle(language + "單曲月榜", "	KKBOX-" + language + "單曲月榜", true);
+//				printData2();
+				
+				//test
+				fw.write(str+"\n");
 			}
+//			
+//			fw.flush();
+//			fw.close();
+				
+				
+				
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +112,33 @@ public class MainScanner {
 	private static void printData(){
 		if(flag == true){
 			if (str.contains("<h4 class=")) {
+				Songs = str.split("title=\"");
+				Songs = Songs[1].split("\">");
+			}
+			if (str.contains("<h5 class=")) {
+				Artist = str.split("title=\"");
+				Artist = Artist[1].split("\">");
+			}
+			
+			if(Artist != null && Songs != null){
+				System.out.println("No."+ ++no + ": "+Artist[0] + " ----- " + Songs[0]);
+				Songs = null;
+				Artist = null;
+			}
+		}
+	}
+	
+	
+	/**
+	 * 華語單曲日榜 Top 100
+	 */
+	private static void printData2(){
+		
+//		System.out.println(str);
+		
+
+		if(flag == true){
+			if (str.contains("<h4><a href=")) {
 				Songs = str.split("title=\"");
 				Songs = Songs[1].split("\">");
 			}
