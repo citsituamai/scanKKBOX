@@ -15,7 +15,7 @@ public class MainScanner {
 	static boolean flag = false;
 //	1
 //	2
-	
+//	3
 	public static void main(String[] arg) throws Exception {
 		
 		String chinese_kkbox = "http://www.kkbox.com/tw/tc/charts/chinese-index.html";
